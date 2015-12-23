@@ -11,7 +11,13 @@ public class TestController {
     @RequestMapping({"/","/home"})
     public String showHomePage(Model model) {
         model.addAttribute("helloString", TestCoreClass.getHelloString());
-        LoggingProvider.info("{} test", "slf4j-log4j");
+        LoggingProvider.debug("Go to home page view");
         return "home";
+    }
+
+    @RequestMapping("/usual")
+    public String showUsualPage() {
+        LoggingProvider.debug("Go to usual page view");
+        return "usual-page";
     }
 }

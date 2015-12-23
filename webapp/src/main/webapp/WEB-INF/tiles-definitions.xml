@@ -1,0 +1,14 @@
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+        "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+
+<tiles-definitions>
+    <definition name="baseTemplate" template="/WEB-INF/views/components/baseLayout.jsp">
+        <put-attribute name="title" value="Warehouse Online" />
+        <put-attribute name="header" value="/WEB-INF/views/components/header.jsp" />
+        <put-attribute name="footer" value="/WEB-INF/views/components/footer.jsp" />
+    </definition>
+
+    <definition name="home" extends="baseTemplate">
+        <put-attribute name="body" value="/WEB-INF/views/home.jsp" />
+    </definition>
+</tiles-definitions>
