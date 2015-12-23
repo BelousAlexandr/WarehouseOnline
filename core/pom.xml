@@ -13,6 +13,13 @@
     <packaging>jar</packaging>
     <name>Warehouse Online : Core</name>
 
+    <properties>
+        <db.url>jdbc:mysql://localhost:3306/warehouseonline?createDatabaseIfNotExist=true</db.url>
+        <db.user>warehouse_admin</db.user>
+        <db.password>warehouse_admin</db.password>
+        <liquibase.goal>update</liquibase.goal>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
@@ -70,6 +77,45 @@
             <artifactId>slf4j-api</artifactId>
             <version>1.7.13</version>
         </dependency>
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+            <version>3.4.2</version>
+        </dependency>
 
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-maven-plugin</artifactId>
+                <version>3.0.5</version>
+                <configuration>
+                    <changeLogFile>
+                        src/main/liquibase/master.changelog.xml
+                    </changeLogFile>
+                    <driver>com.mysql.jdbc.Driver</driver>
+                    <url>${db.url}</url>
+                    <username>${db.user}</username>
+                    <password>${db.password}</password>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>${liquibase.goal}</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>mysql</groupId>
+                        <artifactId>mysql-connector-java</artifactId>
+                        <version>5.1.37</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+        </plugins>
+    </build>
 </project>
