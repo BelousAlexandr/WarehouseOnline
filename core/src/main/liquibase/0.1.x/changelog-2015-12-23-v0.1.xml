@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog-3.0.xsd">
+    <changeSet id="2015-12-23 23:17" author="alex.vesy96@gmail.com">
+        <sql>
+            ALTER SCHEMA `warehouseonline` CHARACTER SET 'utf8mb4';
+        </sql>
+        <rollback/>
+    </changeSet>
+
+    <changeSet id="2015-12-23 23:22" author="alex.vesy96@gmail.com">
+        <createTable tableName="user">
+            <column name="id" autoIncrement="true" type="int">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="client_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="first_name" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_name" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="middle_name" type="varchar(100)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="birthday" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="city" type="varchar(100)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="street" type="varchar(100)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="house" type="varchar(20)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="apartment" type="varchar(20)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="login" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="hashpwd" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="shown" type="bit(1)" defaultValue="1">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="user" cascadeConstraints="false"/>
+        </rollback>
+    </changeSet>
+    
+    <changeSet id="2015-12-24 00:06" author="alex.vesy96@gmail.com">
+        <createTable tableName="user_role">
+            <column name="id" autoIncrement="true" type="int">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="user_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <sql>
+            ALTER TABLE `user_role` ADD `name`
+            ENUM('SYSTEM_ADMIN','ADMIN','MANAGER','DISPATCHER','CONTROLLER','OWNER')
+            NOT NULL;
+        </sql>
+        <rollback>
+            <dropTable tableName="user_role" cascadeConstraints="false"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="2015-12-24 00:12" author="alex.vesy96@gmail.com">
+        <addForeignKeyConstraint baseTableName="user_role" baseColumnNames="user_id"
+                                 constraintName="fk_user_id"
+                                 referencedTableName="user" referencedColumnNames="id"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+</databaseChangeLog>
