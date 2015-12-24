@@ -84,8 +84,50 @@
 
     <changeSet id="2015-12-24 00:12" author="alex.vesy96@gmail.com">
         <addForeignKeyConstraint baseTableName="user_role" baseColumnNames="user_id"
-                                 constraintName="fk_user_id"
+                                 constraintName="fk_user_role_user_id"
                                  referencedTableName="user" referencedColumnNames="id"
                                  onDelete="NO ACTION" onUpdate="NO ACTION"/>
+        <rollback>
+            <dropForeignKeyConstraint baseTableName="user_role"
+                                      constraintName="fk_user_role_user_id"/>
+        </rollback>
     </changeSet>
+    
+    <changeSet id="2015-12-24 01:19" author="alex.vesy96@gmail.com">
+        <createTable tableName="client">
+            <column name="id" autoIncrement="true" type="int">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="registration_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="shown" type="bit(1)" defaultValue="1">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <sql>
+            ALTER TABLE `client` ADD `state` ENUM('ACTIVE', 'SUSPENDED') NOT NULL AFTER
+            `registration_date`;
+        </sql>
+        <rollback>
+            <dropTable tableName="client" cascadeConstraints="false"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="2015-12-24 01:26" author="alex.vesy96@gmail.com">
+        <addForeignKeyConstraint baseTableName="user" baseColumnNames="client_id"
+                                 constraintName="fk_user_client_id"
+                                 referencedTableName="client" referencedColumnNames="id"
+                                 onUpdate="NO ACTION" onDelete="NO ACTION"/>
+        <rollback>
+            <dropForeignKeyConstraint baseTableName="user" constraintName="fk_user_client_id"/>
+        </rollback>
+    </changeSet>
+
 </databaseChangeLog>
