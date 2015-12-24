@@ -1,0 +1,473 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog-3.0.xsd">
+    <changeSet id="2015-12-24 01:37" author="alex.vesy96@gmail.com">
+        <createTable tableName="sender">
+            <column name="id" autoIncrement="true" type="int">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="client_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="shown" type="bit(1)" defaultValue="1">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="sender" cascadeConstraints="false"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="2015-12-24 01:40" author="alex.vesy96@gmail.com">
+        <addForeignKeyConstraint baseTableName="sender" baseColumnNames="client_id"
+                                 constraintName="fk_sender_client_id"
+                                 referencedTableName="client" referencedColumnNames="id"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+        <rollback>
+            <dropForeignKeyConstraint baseTableName="sender" constraintName="fk_sender_client_id"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="2015-12-24 01:41" author="alex.vesy96@gmail.com">
+        <createTable tableName="recipient">
+            <column name="id" autoIncrement="true" type="int">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="client_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="shown" type="bit(1)" defaultValue="1">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="recipient" cascadeConstraints="false"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="2015-12-24 01:44" author="alex.vesy96@gmail.com">
+        <addForeignKeyConstraint baseTableName="recipient" baseColumnNames="client_id"
+                                 constraintName="fk_recipient_client_id"
+                                 referencedTableName="client" referencedColumnNames="id"
+                                 onUpdate="NO ACTION" onDelete="NO ACTION"/>
+        <rollback>
+            <dropForeignKeyConstraint baseTableName="recipient" constraintName="fk_recipient_client_id"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="2015-12-24 01:45" author="alex.vesy96@gmail.com">
+        <createTable tableName="carrier">
+            <column name="id" autoIncrement="true" type="int">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="trusted" type="bit(1)" defaultValue="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="shown" type="bit(1)" defaultValue="1">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <sql>
+            ALTER TABLE `carrier` ADD `type` ENUM('INDIVIDUAL', 'LEGAL') NOT NULL AFTER `name`;
+        </sql>
+        <rollback>
+            <dropTable tableName="carrier" cascadeConstraints="false"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="2015-12-24 01:49" author="alex.vesy96@gmail.com">
+        <createTable tableName="country">
+            <column name="id" autoIncrement="true" type="int">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code" type="varchar(5)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="country" cascadeConstraints="false"/>
+        </rollback>
+    </changeSet>
+    
+    <changeSet id="2015-12-24 01:58" author="alex.vesy96@gmail.com">
+        <createTable tableName="driver">
+            <column name="id" autoIncrement="true" type="int">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="country_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="first_name" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_name" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="middle_name" type="varchar(100)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="passport" type="varchar(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="shown" type="bit(1)" defaultValue="1">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="driver"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="2015-12-24 02:03" author="alex.vesy96@gmail.com">
+        <addForeignKeyConstraint baseTableName="driver" baseColumnNames="country_id"
+                                 constraintName="fk_driver_country_id"
+                                 referencedTableName="country" referencedColumnNames="id"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+        <rollback>
+            <dropForeignKeyConstraint baseTableName="driver" constraintName="fk_driver_country_id"/>
+        </rollback>
+    </changeSet>
+    
+    <changeSet id="2015-12-24 02:04" author="alex.vesy96@gmail.com">
+        <createTable tableName="packing_list">
+            <column name="id" autoIncrement="true" type="int">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="carrier_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sender_id" type="int">
+                <constraints nullable="true"/>
+            </column>
+            <column name="recipient_id" type="int">
+                <constraints nullable="true"/>
+            </column>
+            <column name="start_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="type" type="bit(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="product_sum" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="shown" type="bit(1)" defaultValue="1">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="packing_list" cascadeConstraints="false"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="2015-12-24 02:16" author="alex.vesy96@gmail.com">
+        <addForeignKeyConstraint baseTableName="packing_list" baseColumnNames="carrier_id"
+                                 constraintName="fk_packing_list_carrier_id"
+                                 referencedTableName="carrier" referencedColumnNames="id"
+                                 onUpdate="NO ACTION" onDelete="NO ACTION"/>
+        <rollback>
+            <dropForeignKeyConstraint baseTableName="packing_list" constraintName="fk_packing_list_carrier_id"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="2015-12-24 02:17" author="alex.vesy96@gmail.com">
+        <addForeignKeyConstraint baseTableName="packing_list" baseColumnNames="user_id"
+                                 constraintName="fk_packing_list_user_id"
+                                 referencedTableName="user" referencedColumnNames="id"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+        <rollback>
+            <dropForeignKeyConstraint baseTableName="packing_list" constraintName="fk_packing_list_user_id"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="2015-12-24 02:18" author="alex.vesy96@gmail.com">
+        <addForeignKeyConstraint baseTableName="packing_list" baseColumnNames="sender_id"
+                                 constraintName="fk_packing_list_sender_id"
+                                 referencedTableName="sender" referencedColumnNames="id"
+                                 onUpdate="NO ACTION" onDelete="NO ACTION"/>
+        <rollback>
+            <dropForeignKeyConstraint baseTableName="packing_list" constraintName="fk_packing_list_sender_id"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="2015-12-24 02:19" author="alex.vesy96@gmail.com">
+        <addForeignKeyConstraint baseTableName="packing_list" baseColumnNames="recipient_id"
+                                 constraintName="fk_packing_list_recipient_id"
+                                 referencedTableName="recipient" referencedColumnNames="id"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+        <rollback>
+            <dropForeignKeyConstraint baseTableName="packing_list" constraintName="fk_packing_list_recipient_id"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="2015-12-24 02:20" author="alex.vesy96@gmail.com">
+        <createTable tableName="vehicle">
+            <column name="id" autoIncrement="true" type="int">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="packing_list_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="driver_id" type="int">
+                <constraints nullable="true"/>
+            </column>
+            <column name="model" type="varchar(20)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="number" type="varchar(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="shown" type="bit(1)" defaultValue="1">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <sql>
+            ALTER TABLE `vehicle` ADD `type` ENUM('TRUCK', 'WAGON', 'TRAILER') AFTER `number`;
+            ALTER TABLE `vehicle` ADD `storage_type` ENUM('HEATED', 'NON_HEATED', 'REFRIGERATOR',
+            'OUTDOOR') NOT NULL AFTER `type`;
+        </sql>
+        <rollback>
+            <dropTable tableName="vehicle" cascadeConstraints="false"/>
+        </rollback>
+    </changeSet>
+    
+    <changeSet id="2015-12-24 02:26" author="alex.vesy96@gmail.com">
+        <addForeignKeyConstraint baseTableName="vehicle" baseColumnNames="packing_list_id"
+                                 constraintName="fk_vehicle_packing_list_id"
+                                 referencedTableName="packing_list" referencedColumnNames="id" 
+                                 onUpdate="NO ACTION" onDelete="NO ACTION"/>
+        <rollback>
+            <dropForeignKeyConstraint baseTableName="vehicle" constraintName="fk_vehicle_packing_list_id"/>
+        </rollback>
+    </changeSet>
+    
+    <changeSet id="2015-12-24 02:27" author="alex.vesy96@gmail.com">
+        <addForeignKeyConstraint baseTableName="vehicle" baseColumnNames="driver_id"
+                                 constraintName="fk_vehicle_driver_id"
+                                 referencedTableName="driver" referencedColumnNames="id" 
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+        <rollback>
+            <dropForeignKeyConstraint baseTableName="vehicle" constraintName="fk_vehicle_driver_id"/>
+        </rollback>
+    </changeSet>
+    
+    <changeSet id="2015-12-24 02:28" author="alex.vesy96@gmail.com">
+        <createTable tableName="measure_unit">
+            <column name="id" autoIncrement="true" type="int">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="measure_unit" cascadeConstraints="false"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="2015-12-24 02:32" author="alex.vesy96@gmail.com">
+        <createTable tableName="product">
+            <column name="id" autoIncrement="true" type="int">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="measure_unit_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="shown" type="bit(1)" defaultValue="1">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <sql>
+            ALTER TABLE `product` ADD `storage_type` ENUM('HEATED', 'NON_HEATED', 'REFRIGERATOR',
+            'OUTDOOR') NOT NULL AFTER `name`;
+        </sql>
+        <rollback>
+            <dropTable tableName="product" cascadeConstraints="false"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="2015-12-24 02:36" author="alex.vesy96@gmail.com">
+        <addForeignKeyConstraint baseTableName="product" baseColumnNames="measure_unit_id"
+                                 constraintName="fk_product_measure_unit_id"
+                                 referencedTableName="measure_unit" referencedColumnNames="id"
+                                 onUpdate="NO ACTION" onDelete="NO ACTION"/>
+        <rollback>
+            <dropForeignKeyConstraint baseTableName="product" constraintName="fk_product_measure_unit_id"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="2015-12-24 02:38" author="alex.vesy96@gmail.com">
+        <createTable tableName="product_in_packing_list">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="packing_list_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="product_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="price" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="count" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="shown" type="bit(1)" defaultValue="1">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="product_in_packing_list" cascadeConstraints="false"/>
+        </rollback>
+    </changeSet>
+    
+    <changeSet id="2015-12-24 02:44" author="alex.vesy96@gmail.com">
+        <addForeignKeyConstraint baseTableName="product_in_packing_list"
+                                 baseColumnNames="packing_list_id"
+                                 constraintName="fk_product_in_packing_list_packing_list_id"
+                                 referencedTableName="packing_list" referencedColumnNames="id" 
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+        <rollback>
+            <dropForeignKeyConstraint baseTableName="product_in_packing_list" 
+                                      constraintName="fk_product_in_packing_list_packing_list_id"/>
+        </rollback>
+    </changeSet>
+    
+    <changeSet id="2015-12-24 02:45" author="alex.vesy96@gmail.com">
+        <addForeignKeyConstraint baseTableName="product_in_packing_list"
+                                 baseColumnNames="product_id"
+                                 constraintName="fk_product_in_packing_list_product_id"
+                                 referencedTableName="product" referencedColumnNames="id" 
+                                 onUpdate="NO ACTION" onDelete="NO ACTION"/>
+        <rollback>
+            <dropForeignKeyConstraint baseTableName="product_in_packing_list" 
+                                      constraintName="fk_product_in_packing_list_prosuct_id"/>
+        </rollback>
+    </changeSet>
+    
+    <changeSet id="2015-12-24 02:46" author="alex.vesy96@gmail.com">
+        <createTable tableName="product_tracking">
+            <column name="id" autoIncrement="true" type="int">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="product_in_packing_list_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="shown" type="bit(1)" defaultValue="1">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <sql>
+            ALTER TABLE `product_tracking` ADD `state` ENUM('REGISTERED',
+            'CHECK_COMPLETED', 'ACCEPTED_TO_WAREHOUSE', 'LOST_BY_CARRIER', 'LOST_FROM_WAREHOUSE',
+            'STOLEN_FROM_WAREHOUSE', 'CARRIER_SHORTAGE', 'CONFISCATED', 'UTILIZED',
+            'REMOVED_FROM_WAREHOUSE', 'ISSUE_ALLOWED', 'EXPORTED_FROM_WAREHOUSE') NOT NULL AFTER
+            `product_in_packing_list_id`;
+        </sql>
+        <rollback>
+            <dropTable tableName="product_tracking" cascadeConstraints="false"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="2012-12-24 02:54" author="alex.vesy96@gmail.com">
+        <addForeignKeyConstraint baseTableName="product_tracking"
+                                 baseColumnNames="product_in_packing_list_id"
+                                 constraintName="fk_product_tracking_product_in_packing_list_id"
+                                 referencedTableName="product_in_packing_list"
+                                 referencedColumnNames="id" onDelete="NO ACTION"
+                                 onUpdate="NO ACTION"/>
+        <rollback>
+            <dropForeignKeyConstraint baseTableName="product_tracking"
+                                      constraintName="fk_product_tracking_product_in_packing_list_id"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="2015-12-24 02:56" author="alex.vesy96@gmail.com">
+        <createTable tableName="packing_list_tracking">
+            <column name="id" autoIncrement="true" type="int">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="packing_list_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="shown" type="bit(1)" defaultValue="1">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <sql>
+            ALTER TABLE `packing_list_tracking` ADD `state` ENUM('REGISTERED', 'CHECK_COMPLETED',
+            'ACCEPTED_TO_WAREHOUSE', 'LOST_BY_CARRIER', 'LOST_FROM_WAREHOUSE',
+            'STOLEN_FROM_WAREHOUSE', 'CARRIER_SHORTAGE', 'CONFISCATED', 'UTILIZED',
+            'REMOVED_FROM_WAREHOUSE', 'ISSUE_ALLOWED', 'EXPORTED_FROM_WAREHOUSE') NOT NULL AFTER
+            `packing_list_id`;
+        </sql>
+        <rollback>
+            <dropTable tableName="packing_list_tracking" cascadeConstraints="false"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="2015-12-24 03:02" author="alex.vesy96@gmail.com">
+        <addForeignKeyConstraint baseTableName="packing_list_tracking"
+                                 baseColumnNames="packing_list_id"
+                                 constraintName="fk_packing_list_tracking_packing_list_id"
+                                 referencedTableName="packing_list" referencedColumnNames="id"
+                                 onUpdate="NO ACTION" onDelete="NO ACTION"/>
+        <rollback>
+            <dropForeignKeyConstraint baseTableName="packing_list_tracking"
+                                      constraintName="fk_packing_list_tracking_packing_list_id"/>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>
