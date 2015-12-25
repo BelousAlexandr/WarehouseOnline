@@ -1,13 +1,14 @@
 package com.itechart.warehouse.core.user.repository;
 
 import com.itechart.warehouse.core.user.User;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
-public class TempUserRepositoryImpl implements UserRepository {
+public class UserRepositoryImpl implements UserRepository {
     @Autowired
     private SessionFactory sessionFactory;
 
@@ -33,8 +34,7 @@ public class TempUserRepositoryImpl implements UserRepository {
 
     @Override
     public User findOne(Integer id) {
-        System.out.println("FindOne");
-        return (User) sessionFactory.getCurrentSession().get(User.class, id);
+        return (User) session().get(User.class, id);
     }
 
     @Override
@@ -75,5 +75,9 @@ public class TempUserRepositoryImpl implements UserRepository {
     @Override
     public void deleteAll() {
 
+    }
+
+    private Session session() {
+        return sessionFactory.getCurrentSession();
     }
 }
