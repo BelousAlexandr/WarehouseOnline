@@ -10,5 +10,7 @@
     <context:component-scan base-package="com.itechart.warehouse.core"/>
 
     <bean id="userRepositoryImpl" class="com.itechart.warehouse.core.user.repository.UserRepositoryImpl" />
-    
+    <bean id="clientRepositoryImpl" class="com.itechart.warehouse.core.client.repository.ClientRepositoryImpl"/>
+    <bean id="clientRepositoryCustomImpl" class="com.itechart.warehouse.core.client.repository.ClientRepositoryCustomImpl"/>
+
 </beans>
