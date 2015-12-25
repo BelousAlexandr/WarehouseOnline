@@ -2,13 +2,11 @@ package com.itechart.warehouse.core.util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
-
 public class LoggingProvider {
 
     final static Logger logger = LoggerFactory.getLogger(LoggingProvider.class);
 
-    public static void info(String message, String... parameters){
+    public static void info(String message, Object... parameters){
         if(parameters != null) {
             logger.info(message, parameters);
         }else{
@@ -16,7 +14,7 @@ public class LoggingProvider {
         }
     }
 
-    public static void debug(String message, String... parameters){
+    public static void debug(String message, Object... parameters){
         if(parameters!=null) {
             logger.debug(message, parameters);
         }else{
@@ -24,7 +22,7 @@ public class LoggingProvider {
         }
     }
 
-    public static void error(String message, String... parameters) {
+    public static void error(String message, Object... parameters) {
         if(parameters!=null) {
             logger.error(message, parameters);
         }else{
