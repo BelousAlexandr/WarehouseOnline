@@ -1,6 +1,7 @@
 package com.itechart.warehouse.webapp;
 
-import com.itechart.warehouse.core.TestCoreClass;
+import com.itechart.warehouse.core.user.repository.TempUserRepositoryImpl;
+import com.itechart.warehouse.core.user.repository.UserRepository;
 import com.itechart.warehouse.core.util.LoggingProvider;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,8 +11,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class TestController {
     @RequestMapping({"/","/home"})
     public String showHomePage(Model model) {
-        model.addAttribute("helloString", TestCoreClass.getHelloString());
+        //model.addAttribute("helloString", TestCoreClass.getHelloString());
         LoggingProvider.debug("Go to home page view");
+        UserRepository repository = new TempUserRepositoryImpl();
+        //UserServiceImpl service = new UserServiceImpl();
+        //User user = service.find(2);
+        model.addAttribute("helloString", repository.findOne(2).getName());
         return "home";
     }
 
