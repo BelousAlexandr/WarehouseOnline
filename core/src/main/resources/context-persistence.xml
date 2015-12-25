@@ -7,12 +7,18 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
 	   http://www.springframework.org/schema/beans/spring-beans.xsd
 	   http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
+	   http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
 	   http://www.springframework.org/schema/util  http://www.springframework.org/schema/util/spring-util-3.1.xsd">
 
     <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
         <property name="dataSource" ref="dataSource" />
         <property name="packagesToScan" value="com.itechart.warehouse.core" />
         <property name="hibernateProperties" ref="hibernateProperties" />
+        <property name="annotatedClasses">
+            <list>
+                <value>com.itechart.warehouse.core.user.User</value>
+            </list>
+        </property>
     </bean>
 
     <bean id="entityManagerFactory"
@@ -33,7 +39,7 @@
     </bean>
 
     <bean id="hibernateProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
-        <property name="ignoreResourceNotFound" value="true"/>
+        <property name="ignoreResourceNotFound" value="false"/>
         <property name="locations">
             <list>
                 <value>classpath:hibernate.properties</value>
@@ -42,7 +48,7 @@
     </bean>
 
     <!-- Transaction configuration-->
-    <!--<tx:annotation-driven transaction-manager="transactionManager"/>-->
+    <tx:annotation-driven transaction-manager="transactionManager"/>
     <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
         <property name="sessionFactory" ref="sessionFactory" />
     </bean>
