@@ -19,7 +19,7 @@
     </tr>
     </thead>
     <tbody>
-    <c:forEach var="client" items="${requestScope.clientList}">
+    <c:forEach var="client" items="${requestScope.clients}">
         <tr>
             <td>
                 <div class="checkbox">
@@ -31,7 +31,7 @@
             </td>
             <td><fmt:formatDate pattern="dd.MM.yyyy"
                                 value="${client.dateOfRegistration}" /></td>
-            <td>${client.state}</td>
+            <td>${client.state.state}</td>
         </tr>
     </c:forEach>
 

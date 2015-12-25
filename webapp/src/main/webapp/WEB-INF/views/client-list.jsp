@@ -15,7 +15,7 @@
         </div>
 
         <c:choose>
-            <c:when test="${not empty requestScope.clientList}">
+            <c:when test="${not empty requestScope.clients}">
                 <jsp:include page="client-table.jsp" />
             </c:when>
             <c:otherwise>
