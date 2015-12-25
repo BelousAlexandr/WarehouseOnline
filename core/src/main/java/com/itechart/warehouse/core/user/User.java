@@ -8,14 +8,14 @@ import javax.persistence.Table;
 @javax.persistence.Entity
 @Table(name = "user")
 public class User extends Entity{
-    private String name;
+    private String firstName;
 
     @Column(name = "first_name", nullable = false, insertable = true, updatable = true, length = 255)
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String name) {
+        this.firstName = name;
     }
 }
