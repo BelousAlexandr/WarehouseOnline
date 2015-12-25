@@ -11,4 +11,8 @@
     <definition name="home" extends="baseTemplate">
         <put-attribute name="body" value="/WEB-INF/views/home.jsp" />
     </definition>
+
+    <definition name="client-list" extends="baseTemplate">
+        <put-attribute name="body" value="/WEB-INF/views/client-list.jsp"/>
+    </definition>
 </tiles-definitions>
