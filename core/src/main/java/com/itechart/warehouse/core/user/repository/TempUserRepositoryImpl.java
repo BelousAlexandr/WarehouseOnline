@@ -1,11 +1,17 @@
 package com.itechart.warehouse.core.user.repository;
 
 import com.itechart.warehouse.core.user.User;
+import com.itechart.warehouse.core.util.LoggingProvider;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 public class TempUserRepositoryImpl implements UserRepository {
+    @Autowired
+    private SessionFactory sessionFactory;
+
     @Override
     public Iterable<User> findAll(Sort sort) {
         return null;
@@ -27,8 +33,11 @@ public class TempUserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public User findOne(Integer integer) {
-        return null;
+    public User findOne(Integer id) {
+        System.out.println("FindOne");
+        LoggingProvider.info("{}", sessionFactory);
+        LoggingProvider.info("{}", sessionFactory.getCurrentSession());
+        return (User) sessionFactory.getCurrentSession().get(User.class, id);
     }
 
     @Override

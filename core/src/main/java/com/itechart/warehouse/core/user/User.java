@@ -3,8 +3,10 @@ package com.itechart.warehouse.core.user;
 import com.itechart.warehouse.core.entity.Entity;
 
 import javax.persistence.Column;
+import javax.persistence.Table;
 
 @javax.persistence.Entity
+@Table(name = "user")
 public class User extends Entity{
     private String name;
 
