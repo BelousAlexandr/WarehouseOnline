@@ -14,11 +14,8 @@ public class TestController {
 
     @RequestMapping({"/","/home"})
     public String showHomePage(Model model) {
-        //model.addAttribute("helloString", TestCoreClass.getHelloString());
         LoggingProvider.debug("Go to home page view");
-        //UserServiceImpl service = new UserServiceImpl();
-        //User user = service.find(2);
-        model.addAttribute("helloString", userService.nameById(2));
+        model.addAttribute("helloString", userService.firstNameById(1));
         return "home";
     }
 

@@ -12,13 +12,18 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class UserServiceImpl extends AbstractEntityService<User> implements UserService {
     @Autowired
-    private UserRepository tempUserRepository;
+    private UserRepository userRepositoryImpl;
 
-    public String nameById(int id) {
-        return ((User)tempUserRepository.findOne(id)).getName();
+    public String firstNameById(int id) {
+        User user = userRepositoryImpl.findOne(id);
+        if(user != null) {
+            return user.getFirstName();
+        }
+        return null;
     }
+
     @Override
     protected EntityRepository<User> getRepository() {
-        return tempUserRepository;
+        return userRepositoryImpl;
     }
 }
