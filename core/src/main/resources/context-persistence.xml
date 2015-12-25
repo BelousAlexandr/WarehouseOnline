@@ -17,6 +17,7 @@
         <property name="annotatedClasses">
             <list>
                 <value>com.itechart.warehouse.core.user.User</value>
+                <value>com.itechart.warehouse.core.client.Client</value>
             </list>
         </property>
     </bean>
