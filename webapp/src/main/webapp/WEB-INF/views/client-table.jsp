@@ -30,8 +30,8 @@
                 <a href="client?id=${client.id}">${client.name}</a>
             </td>
             <td><fmt:formatDate pattern="dd.MM.yyyy"
-                                value="${client.dateOfRegistration}" /></td>
-            <td>${client.state.state}</td>
+                                value="${client.registrationDate}" /></td>
+            <td>${client.state}</td>
         </tr>
     </c:forEach>
 
