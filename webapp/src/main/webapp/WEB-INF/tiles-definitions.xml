@@ -8,7 +8,7 @@
         <put-attribute name="footer" value="/WEB-INF/views/components/footer.jsp" />
     </definition>
 
-    <definition name="home" extends="baseTemplate">
-        <put-attribute name="body" value="/WEB-INF/views/home.jsp" />
+    <definition name="login" extends="baseTemplate">
+        <put-attribute name="body" value="/WEB-INF/views/login.jsp" />
     </definition>
 </tiles-definitions>

@@ -9,14 +9,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class TestController {
+
     @Autowired
     UserService userService;
 
-    @RequestMapping({"/","/home"})
+    @RequestMapping({"/","/login"})
     public String showHomePage(Model model) {
+        LoggingProvider.debug("Go to login page view");
+        model.addAttribute("helloString", userService.firstNameById(1));
+        return "login";
+    }
+
+    @RequestMapping({"/","/login"})
+    public String loginPage(Model model) {
         LoggingProvider.debug("Go to home page view");
         model.addAttribute("helloString", userService.firstNameById(1));
-        return "home";
+        return "login";
     }
 
     @RequestMapping("/usual")

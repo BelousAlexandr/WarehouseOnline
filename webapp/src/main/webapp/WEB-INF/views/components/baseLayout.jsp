@@ -3,8 +3,8 @@
 <html>
 <head>
     <title><tiles:insertAttribute name="title"/></title>
-    <link href="/resources/css/sticky-footer-page.css" rel="stylesheet">
-    <link href="/resources/css/bootstrap.min.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/resources/css/sticky-footer-page.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
     <div id="wrap">
